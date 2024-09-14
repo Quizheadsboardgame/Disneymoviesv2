@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disney Movies Quiz</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Baloo 2', sans-serif;
+            background-color: #38B6FF; /* Background color */
+            color: black;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        #yellow-box {
+            width: 300px;
+            height: 300px;
+            background-color: #FED405; /* Yellow color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            border: 5px solid black; /* Black edging */
+            transition: transform 0.1s ease-in-out;
+        }
+
+        #question-answer {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Keyframes for the bounce animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Class to trigger the bounce animation */
+        .animate-bounce {
+            animation: bounce 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="yellow-box">DISNEY MOVIES</div>
+
+    <div id="question-answer"></div>
+
+    <script>
+        const yellowBox = document.getElementById("yellow-box");
+        const questionAnswerDiv = document.getElementById("question-answer");
+
+        // Array of questions and answers about Disney movies
+        const disneyQuestions = [
+            { question: "What is the name of Mickey Mouse's dog?", answer: "Pluto" },
+            { question: "Which Disney movie features a talking snowman named Olaf?", answer: "Frozen" },
+            { question: "In 'The Lion King', what is the name of Simba's father?", answer: "Mufasa" },
+            { question: "What type of animal is Dumbo?", answer: "Elephant" },
+            { question: "Who is the villain in 'Aladdin'?", answer: "Jafar" },
+            { question: "What is the name of Ariel's fish friend in 'The Little Mermaid'?", answer: "Flounder" },
+            { question: "In 'Beauty and the Beast', what is the name of Belle's father?", answer: "Maurice" },
+            { question: "Which Disney princess has a pet tiger named Rajah?", answer: "Jasmine" },
+            { question: "What is the name of the city where 'Zootopia' takes place?", answer: "Zootopia" },
+            { question: "What is the name of the fairy who helps Cinderella?", answer: "Fairy Godmother" },
+            { question: "Which Disney movie features a young girl named Moana?", answer: "Moana" },
+            { question: "Who is the main character in 'Peter Pan'?", answer: "Peter Pan" },
+            { question: "What kind of animal is Bambi?", answer: "Deer" },
+            { question: "In 'Mulan', what is the name of Mulan's dragon companion?", answer: "Mushu" },
+            { question: "What is the name of the toy cowboy in 'Toy Story'?", answer: "Woody" },
+            { question: "Which Disney movie features a princess named Pocahontas?", answer: "Pocahontas" },
+            { question: "Who is the main character in 'Alice in Wonderland'?", answer: "Alice" },
+            { question: "In 'Snow White', what are the names of the seven dwarfs?", answer: "Doc, Grumpy, Happy, Sleepy, Bashful, Sneezy, Dopey" },
+            { question: "What is the name of the mermaid in 'The Little Mermaid'?", answer: "Ariel" },
+            { question: "Who is the villain in 'Sleeping Beauty'?", answer: "Maleficent" },
+            { question: "What kind of animal is Thumper in 'Bambi'?", answer: "Rabbit" },
+            { question: "In 'The Jungle Book', what is the name of the bear who is friends with Mowgli?", answer: "Baloo" },
+            { question: "What is the name of the princess in 'Sleeping Beauty'?", answer: "Aurora" },
+            { question: "In 'Cinderella', what is the name of Cinderella's stepsisters?", answer: "Anastasia and Drizella" },
+            { question: "Who is the hero of 'Hercules'?", answer: "Hercules" },
+            { question: "What is the name of the bear in 'The Many Adventures of Winnie the Pooh'?", answer: "Winnie the Pooh" },
+            { question: "In 'Ratatouille', what kind of animal is Remy?", answer: "Rat" },
+            { question: "Who is the villain in '101 Dalmatians'?", answer: "Cruella de Vil" },
+            { question: "What is the name of the dog in 'Lady and the Tramp'?", answer: "Lady" },
+            { question: "In 'The Aristocats', what is the name of the mother cat?", answer: "Duchess" },
+            { question: "What is the name of the toy spaceman in 'Toy Story'?", answer: "Buzz Lightyear" },
+            { question: "What is the name of Elsa's sister in 'Frozen'?", answer: "Anna" },
+            { question: "In 'Finding Nemo', what kind of fish is Nemo?", answer: "Clownfish" },
+            { question: "What is the name of the town in 'Cars'?", answer: "Radiator Springs" },
+            { question: "Who is the princess in 'Beauty and the Beast'?", answer: "Belle" },
+            { question: "What animal is Abu in 'Aladdin'?", answer: "Monkey" },
+            { question: "In 'Pocahontas', what is the name of Pocahontas' love interest?", answer: "John Smith" },
+            { question: "What is the name of the fairy in 'Sleeping Beauty'?", answer: "Flora, Fauna, and Merryweather" },
+            { question: "In 'Tangled', what is the name of Rapunzel's chameleon friend?", answer: "Pascal" },
+            { question: "Who is the villain in 'Tarzan'?", answer: "Clayton" },
+            { question: "What is the name of the dog in 'The Fox and the Hound'?", answer: "Copper" },
+            { question: "In 'The Incredibles', what is the name of the superhero family?", answer: "The Parr Family" },
+            { question: "What is the name of the evil sea witch in 'The Little Mermaid'?", answer: "Ursula" },
+            { question: "In 'Mulan', who is the emperor of China?", answer: "The Emperor" },
+            { question: "What is the name of the princess in 'The Princess and the Frog'?", answer: "Tiana" },
+            { question: "What is the name of the snow queen in 'Frozen'?", answer: "Elsa" },
+            { question: "Who is the villain in 'The Hunchback of Notre Dame'?", answer: "Judge Claude Frollo" },
+            { question: "What is the name of the lion cub in 'The Lion King'?", answer: "Simba" },
+            { question: "In 'Jungle Book', what is the name of the tiger?", answer: "Shere Khan" },
+            { question: "What is the name of the dog in 'Oliver & Company'?", answer: "Dodger" },
+            { question: "Who is the hero in 'The Black Cauldron'?", answer: "Taran" },
+            { question: "What is the name of the rooster in 'Robin Hood'?", answer: "Alan-a-Dale" },
+            { question: "Who is the villain in 'Robin Hood'?", answer: "Prince John" },
+            { question: "In 'The Sword in the Stone', who pulls the sword from the stone?", answer: "Arthur" },
+            { question: "What is the name of the dragon in 'Mulan'?", answer: "Mushu" },
+            { question: "Who is the villain in 'The Rescuers'?", answer: "Madame Medusa" },
+            { question: "What is the name of the boy who never grows up in 'Peter Pan'?", answer: "Peter Pan" },
+            { question: "In 'Aladdin', who is the Sultan's daughter?", answer: "Jasmine" },
+            { question: "What is the name of the cat in 'The Aristocats'?", answer: "Duchess" },
+            { question: "Who is the villain in 'The Great Mouse Detective'?", answer: "Ratigan" },
+            { question: "In 'The Little Mermaid', who is Ariel's father?", answer: "King Triton" },
+            { question: "What is the name of the magic carpet in 'Aladdin'?", answer: "Magic Carpet" },
+            { question: "In 'Bambi', who is Bambi's best friend?", answer: "Thumper" },
+            { question: "What is the name of the wolf in 'The Jungle Book'?", answer: "Akela" },
+            { question: "Who is the villain in 'Dumbo'?", answer: "The Ringmaster" },
+            { question: "What is the name of the little girl in 'Lilo & Stitch'?", answer: "Lilo" },
+            { question: "Who is the main character in 'Winnie the Pooh'?", answer: "Winnie the Pooh" },
+            { question: "What is the name of the little elephant in 'Dumbo'?", answer: "Dumbo" },
+            { question: "Who is the villain in 'Alice in Wonderland'?", answer: "Queen of Hearts" },
+            { question: "In 'The Lion King', who is the main antagonist?", answer: "Scar" },
+            { question: "What is the name of the princess in 'Sleeping Beauty'?", answer: "Aurora" },
+            { question: "Who is the hero in 'Atlantis: The Lost Empire'?", answer: "Milo Thatch" },
+            { question: "What is the name of the frog prince in 'The Princess and the Frog'?", answer: "Prince Naveen" },
+            { question: "Who is the villain in 'The Fox and the Hound'?", answer: "Amos Slade" },
+            { question: "What is the name of the prince in 'Cinderella'?", answer: "Prince Charming" },
+            { question: "Who is the main character in 'Fantasia'?", answer: "There is no main character; it's an anthology film" },
+            { question: "In 'Pocahontas', who is the villain?", answer: "Governor Ratcliffe" },
+            { question: "What is the name of the snowman in 'Frozen'?", answer: "Olaf" },
+            { question: "What is the name of the hero in 'Tangled'?", answer: "Flynn Rider" },
+            { question: "What is the name of the little girl who owns the toys in 'Toy Story'?", answer: "Andy" },
+            { question: "Who is the villain in 'The Emperor's New Groove'?", answer: "Yzma" },
+            { question: "In 'The Jungle Book', who is the main character?", answer: "Mowgli" },
+            { question: "What is the name of the princess in 'The Little Mermaid'?", answer: "Ariel" },
+            { question: "What is the name of the mermaid in 'The Little Mermaid'?", answer: "Ariel" },
+            { question: "In 'Moana', who is the demigod?", answer: "Maui" },
+            { question: "What is the name of the toy dinosaur in 'Toy Story'?", answer: "Rex" },
+            { question: "Who is the villain in 'Hercules'?", answer: "Hades" },
+            { question: "What is the name of the evil sorcerer in 'Aladdin'?", answer: "Jafar" },
+            { question: "Who is the main character in 'Tarzan'?", answer: "Tarzan" },
+            { question: "What is the name of the baby in 'The Lion King'?", answer: "Simba" },
+            { question: "In 'Lilo & Stitch', what is the name of the alien?", answer: "Stitch" },
+            { question: "What is the name of the princess in 'Snow White'?", answer: "Snow White" },
+            { question: "Who is the villain in 'The Rescuers Down Under'?", answer: "Percival C. McLeach" },
+            { question: "What is the name of the princess in 'Aladdin'?", answer: "Jasmine" },
+            { question: "In 'Pocahontas', who is the captain of the ship?", answer: "John Smith" },
+            { question: "What is the name of the princess in 'Sleeping Beauty'?", answer: "Aurora" },
+            { question: "What is the name of the horse in 'Beauty and the Beast'?", answer: "Phillipe" },
+            { question: "Who is the villain in 'The Jungle Book'?", answer: "Shere Khan" },
+            { question: "What is the name of the magic wand in 'Sleeping Beauty'?", answer: "The Wand of the Fairies" },
+            { question: "Who is the hero in 'Mulan'?", answer: "Mulan" },
+            { question: "What is the name of the turtle in 'Finding Nemo'?", answer: "Crush" },
+            { question: "Who is the villain in 'Lady and the Tramp'?", answer: "Si and Am" },
+            { question: "What is the name of the dragon in 'Mulan'?", answer: "Mushu" },
+            { question: "Who is the main character in 'The Hunchback of Notre Dame'?", answer: "Quasimodo" },
+            { question: "What is the name of the little girl in 'The Jungle Book'?", answer: "Mowgli" },
+            { question: "In 'Alice in Wonderland', who is the Cheshire Cat's best friend?", answer: "Alice" },
+            { question: "What is the name of the raccoon in 'Pocahontas'?", answer: "Meeko" },
+            { question: "Who is the main character in 'Ratatouille'?", answer: "Remy" },
+            { question: "What is the name of the little mermaid in 'The Little Mermaid'?", answer: "Ariel" },
+            { question: "What is the name of the dragon in 'Mulan'?", answer: "Mushu" },
+            { question: "In 'The Fox and the Hound', who is the best friend of the fox?", answer: "Tod" },
+            { question: "What is the name of the little fish in 'Finding Nemo'?", answer: "Nemo" },
+            { question: "Who is the main character in 'Wreck-It Ralph'?", answer: "Ralph" },
+            { question: "What is the name of the character who owns the toys in 'Toy Story'?", answer: "Andy" },
+            { question: "Who is the villain in 'The Great Mouse Detective'?", answer: "Ratigan" },
+            { question: "In 'Lilo & Stitch', who is the main character's sister?", answer: "Nani" },
+            { question: "What is the name of the main character in 'The Princess and the Frog'?", answer: "Tiana" },
+            { question: "What is the name of the rabbit in 'Bambi'?", answer: "Thumper" },
+            { question: "Who is the hero in 'Robin Hood'?", answer: "Robin Hood" },
+            { question: "What is the name of the little boy in 'Peter Pan'?", answer: "Peter Pan" },
+            { question: "What is the name of the evil queen in 'Snow White'?", answer: "The Evil Queen" },
+            { question: "Who is the hero in 'The Lion King'?", answer: "Simba" },
+            { question: "What is the name of the villain in 'The Little Mermaid'?", answer: "Ursula" },
+            { question: "Who is the villain in 'The Aristocats'?", answer: "Edgar" },
+            { question: "What is the name of the lion cub in 'The Lion King'?", answer: "Simba" },
+            { question: "What is the name of the dog in 'The Fox and the Hound'?", answer: "Copper" },
+            { question: "In 'The Jungle Book', who is the bear who becomes friends with Mowgli?", answer: "Baloo" }
+        ];
+
+        let shuffledQuestions = [];
+        let questionIndex = 0;
+
+        // Shuffle the questions array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Initialize questions
+        function initializeQuestions() {
+            shuffledQuestions = shuffleArray([...disneyQuestions]);
+            questionIndex = 0;
+            displayQuestion();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (shuffledQuestions.length === 0) {
+                questionAnswerDiv.innerHTML = "<strong>No more questions!</strong>";
+                return;
+            }
+            const currentQA = shuffledQuestions[questionIndex];
+            questionAnswerDiv.innerHTML = `<strong>Question:</strong> ${currentQA.question}<br><strong>Answer:</strong> ${currentQA.answer}`;
+        }
+
+        // Bounce animation on click
+        yellowBox.addEventListener("click", () => {
+            yellowBox.classList.add("animate-bounce");
+            setTimeout(() => yellowBox.classList.remove("animate-bounce"), 300);
+
+            questionIndex++;
+            if (questionIndex >= shuffledQuestions.length) {
+                questionIndex = 0; // Reset to first question if out of questions
+            }
+            displayQuestion();
+        });
+
+        // Initialize quiz on load
+        initializeQuestions();
+    </script>
+
+</body>
+</html>
